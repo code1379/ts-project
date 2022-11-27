@@ -1,1 +1,0 @@
-{"version":3,"file":"bundle.js","mappings":";;;;;;;;;AAAa;AACb,8CAA6C,EAAE,aAAa,EAAC;AAC7D;AACA","sources":["webpack://ts-project/./src/index.ts"],"sourcesContent":["\"use strict\";\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst name = \"dell\";\nconsole.log(\"name\", name);\n"],"names":[],"sourceRoot":""}

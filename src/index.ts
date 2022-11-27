@@ -48,5 +48,111 @@ let username = tuple[0];
 // 元组标识，意义不大，对于 promise.all 来说有用
 let tuple1: [name: string, age: number, male: boolean] = ["jw", 30, true];
 
+// 3> ts中的枚举 自带类型的对象。枚举的值如果没有赋值，从 0 开始 递增的。反举，只能在值为数字的情况下
+// 状态码、接口的定义、权限、标识位
+let person = { name: "xxx" };
+enum USER_ROLE { // 代码中的常量可以全部采用枚举，提示友好，使用方便
+  USER,
+  ADMIN,
+  SUPER_ADMIN
+}
+console.log('USER_ROLE.USER', USER_ROLE.USER)
+console.log('USER_ROLE[0]', USER_ROLE[0])
+
+let c = USER_ROLE.USER
+
+// 常量枚举，不能反举（一般不采用反举(使用索引)，都采用常量枚举）不会生成对象，而是直接将值拿出来
+const enum DIRECTION {
+  LEFT,
+  RIGTH,
+  TOP,
+  BOTTOM
+}
+
+// 4> null undefined 默认情况下， null 和 undefined 只能赋值给 null 和 undefined
+const n = null;
+const u = undefined;
+
+// 如果在非严格null检查的情况下，那么 undefined 和 null 是任何类型的子类型
+// 一般默认开启
+let string: string = "string";
+// strictNullChecks: false
+// string = null;
+// string = undefined;
+
+// 5> void 类型 空类型，函数的返回值可以用 void 表示，其他情况下用不到
+// undefined 和 void 的区别 // undefined 可以赋值给任何值
+function fn1() {
+}
+function fn3() {
+  return;
+}
+function fn2(): void {
+  return undefined;
+}
+
+// 6> never 任何类型的子类型，never 意味着值不可能出现
+// 1. 函数无法到达
+function whileTrue(): never {
+  while (true) { }
+}
+
+function throwError(): never {
+  throw new Error()
+}
+
+function fn4() {
+  throwError();
+  console.log("111")
+}
+
+// 校验逻辑完整性 可以利用 never 特性实现完整性保护
+function validateCheck(value: never) {}
+function getResult(strOrBooleanOrNumber: string | boolean | number) {
+  // 在内部写 js 逻辑的时候，要对每种类型做处理
+  // 如果是字符串 'abc' => ['a', 'b', 'c']
+  // 数字 123 [1,2,3]
+  // true [t, r, u , e]
+  if(typeof strOrBooleanOrNumber === 'string') {
+    return strOrBooleanOrNumber.split("")
+  } else if (typeof strOrBooleanOrNumber === 'number') {
+    return strOrBooleanOrNumber.toString().split("")
+  } else if(typeof strOrBooleanOrNumber === 'boolean' ) {
+    return strOrBooleanOrNumber.toString().split("")
+  }
+
+
+  // ! 没有写 boolean 但是没报错
+  // 校验这个东西完不完整
+  // * 如果达不到 never 则可以正常运行
+  validateCheck(strOrBooleanOrNumber) // * 将 boolean 类型赋值给了 never
+}
+
+
+// string number boolean  null undefined 枚举 元组 数组 never void object
+
+// Object.create()
+// 大写的 Object 类型不用（万物皆对象，最终会找到 Object） craete(1)
+// {} 字面量类型 {} = new Object() 一般不会这样使用 create(1)
+function create(target: object) {} // new Proxy()
+
+create({})
+create(function() {})
+create([])
+
+// symbol bigint 基本不使用
+const sb1: symbol= Symbol();
+const sb2: symbol= Symbol();
+
+const big: bigint = BigInt(Number.MAX_SAFE_INTEGER + 100); // bigint 不能赋值给 number
+
+// any 不进行类型检测，一旦用户写了 any 之后，所有的校验都消失了。如果一个变量没有赋值 默认类型是 any
+let arr: any = [] // 能不写 any 就不写 any 写多了就变成 anyScript
+arr();
+arr.xxx;
+arr = []
+// 出问题了 自己负责
+
+
 // 在真正开发的时候，肯定采用的都是模块化开发
-export {};
+export { };
